@@ -17,10 +17,6 @@ kernel = """
         float end_point_y = data[1] + data[4] * y;
         float end_point_z = data[2] + data[5] * x;
         
-        //if (x == 237 && y == 0) {
-        //    printf("-- %d __ %d %f %f %f  ^^^", x, y, end_point_x, end_point_y, end_point_z);
-        //}
-        
         float to_camera_x = end_point_x;
         float to_camera_y = end_point_y;
         float to_camera_z = end_point_z;
@@ -32,16 +28,13 @@ kernel = """
         float min_distance = data[9];
         
         for (int i = 0; i < 50; i++) {
-            // Преобразовать end point изменив длину..
             float length = sqrtf(
                 powf(end_point_x - camera_x, 2) +
                 powf(end_point_y - camera_y, 2) +
-                powf(end_point_z - camera_z, 2)); // камеры и говна неподходящего размера (end point)
+                powf(end_point_z - camera_z, 2)); 
             float coff = min_distance / length; // Коэфицент удлиннения
-            //if (x == 237 && y == 0) 
-            //    printf("BEFORE ATTENTION! %d (%f, %f, %f) ATTENTION!", i, end_point_x, end_point_y, end_point_z);
-            //
-            camera_x = camera_x + (end_point_x - camera_x) * coff;  // Камера - та самая точка номер 1
+
+            camera_x = camera_x + (end_point_x - camera_x) * coff;  
             camera_y = camera_y + (end_point_y - camera_y) * coff;
             camera_z = camera_z + (end_point_z - camera_z) * coff;
             //if (x == 237 && y == 0) { 
@@ -69,7 +62,6 @@ kernel = """
                         result[(x*screen_height+y)*3+2] = objects[idx*7+6]; 
                     }
                 }
-                // Если расстояние слишком большое updated: 18.12.2020 18:20
                 if (min_distance > 30) {
                     if (x < screen_width && y < screen_height) {
                         result[(x*screen_height+y)*3] = 0;
